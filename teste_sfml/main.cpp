@@ -43,7 +43,7 @@ int main()
     bg_sprite.scale(sf::Vector2f(2.f, 2.f));
 
     mage_sprite.setTexture(mage_texture);
-    mage_sprite.setPosition(sf::Vector2f(215.f, 662.f));
+    mage_sprite.setPosition(sf::Vector2f(215.f, 652.f));
     mage_sprite.scale(sf::Vector2f(2.f, 2.f));
     mage_sprite.setOrigin(sf::Vector2f(32.f, 32.f));
 
@@ -76,12 +76,13 @@ int main()
             if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
                 pause = true;
             }
-            if (sf::Mouse::getPosition(window).x > 283) {
+            
+            if (sf::Mouse::getPosition(window).x > 283 && mage_sprite.getPosition().x <= 510) {
                 if (mage_sprite.getPosition().x < sf::Mouse::getPosition(window).x) {
                     mage_sprite.move(0.1, 0);
                 }
             }
-            else if (sf::Mouse::getPosition(window).x < 283) {
+            else if (sf::Mouse::getPosition(window).x < 283 && mage_sprite.getPosition().x >= 56) {
                 if (mage_sprite.getPosition().x > sf::Mouse::getPosition(window).x) {
                     mage_sprite.move(-0.1, 0);
                 }
@@ -113,3 +114,4 @@ int main()
 
     return 0;
 }
+
