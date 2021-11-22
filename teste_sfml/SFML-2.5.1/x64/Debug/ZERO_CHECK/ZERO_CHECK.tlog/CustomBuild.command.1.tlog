@@ -1,0 +1,10 @@
+^C:\APAGAAR\5O SEMESTRE\ICG\SFML-2.5.1\CMAKEFILES\277A8AFA05A8E13C977B078A549F656F\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/apagaar/5o semestre/ICG/SFML-2.5.1" "-BC:/apagaar/5o semestre/ICG/SFML-2.5.1" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/apagaar/5o semestre/ICG/SFML-2.5.1/SFML.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
