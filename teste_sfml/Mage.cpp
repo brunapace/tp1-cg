@@ -1,6 +1,6 @@
 #include "Mage.h"
 
-void Mage::build_shot()
+void Mage::shoot()
 {
 	std::string shot_name = this->shot_suffix + std::to_string(this->shots.size());
 	GameObject shot = GameObject(this->sprite.getPosition(), this->shot_speed, this->shot_scale, shot_name);
@@ -35,12 +35,6 @@ void Mage::set_default_shot(float shot_speed, std::string shot_texture_file, sf:
 	this->shot_origin = shot_origin;
 }
 
-void Mage::shoot(sf::RenderWindow& window)
-{
-	this->build_shot();
-	this->shots.back().draw(window);
-}
-
 bool has_reached_end(const GameObject& shot) {
 	return shot.sprite.getPosition().y <= 0;
 }
@@ -53,5 +47,3 @@ void Mage::manage_shots(sf::RenderWindow& window)
 	}
 	this->shots.remove_if(has_reached_end);
 }
-
-

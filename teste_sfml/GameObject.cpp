@@ -72,10 +72,11 @@ sf::Vector2f GameObject::get_position()
 	return this->sprite.getPosition();
 }
 
-void GameObject::check_collision(GameObject other_object)
+bool GameObject::check_collision(GameObject other_object)
 {
-	//to implement
-	return;
+	bool collision = this->sprite.getPosition().x + this->sprite.getScale().x >= other_object.sprite.getPosition().x &&
+		other_object.sprite.getPosition().x + other_object.sprite.getScale().x >= this->sprite.getPosition().x;
+	return collision;
 }
 
 void GameObject::draw(sf::RenderWindow &window)

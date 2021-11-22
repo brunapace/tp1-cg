@@ -21,7 +21,7 @@ public:
 	void print_attributes();
 	void move(directions direction);
 	sf::Vector2f get_position();
-	void check_collision(GameObject other_object);
+	bool check_collision(GameObject other_object);
 	void draw(sf::RenderWindow &window);
 };
 
