@@ -6,9 +6,10 @@ GameObject::GameObject()
 	this->name = "";
 }
 
-GameObject::GameObject(sf::Vector2f position, float speed, std::string texture_file, sf::Vector2f scale, std::string name) {
+GameObject::GameObject(sf::Vector2f position, float speed, std::string texture_file, sf::Vector2f scale, std::string name, int life) {
 	this->speed = speed;
 	this->name = name;
+	this->life = life;
 	if (!this->texture.loadFromFile(texture_file)) {
 		std::cout << "erro ao carregar textura de " << name << std::endl;
 	}
@@ -18,10 +19,11 @@ GameObject::GameObject(sf::Vector2f position, float speed, std::string texture_f
 	this->sprite.scale(scale);
 }
 
-GameObject::GameObject(sf::Vector2f position, float speed, sf::Vector2f scale, std::string name)
+GameObject::GameObject(sf::Vector2f position, float speed, sf::Vector2f scale, std::string name, int life)
 {
 	this->speed = speed;
 	this->name = name;
+	this->life = life;
 	this->sprite = sf::Sprite();
 	this->sprite.setPosition(position);
 	this->sprite.scale(scale);
@@ -72,11 +74,9 @@ sf::Vector2f GameObject::get_position()
 	return this->sprite.getPosition();
 }
 
-bool GameObject::check_collision(GameObject other_object)
+bool GameObject::check_collision(GameObject &other_object)
 {
-	bool collision = this->sprite.getPosition().x + this->sprite.getScale().x >= other_object.sprite.getPosition().x &&
-		other_object.sprite.getPosition().x + other_object.sprite.getScale().x >= this->sprite.getPosition().x;
-	return collision;
+	return this->sprite.getGlobalBounds().intersects(other_object.sprite.getGlobalBounds());
 }
 
 void GameObject::draw(sf::RenderWindow &window)

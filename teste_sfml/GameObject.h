@@ -13,15 +13,18 @@ protected:
 	float speed;
 	std::string name;
 	sf::Texture texture;
-public:	
+public:
+	bool operator == (const GameObject& go) const { return name == go.name; }
+	bool operator != (const GameObject& go) const { return !operator==(go); }
 	sf::Sprite sprite;
+	int life;
 	GameObject();
-	GameObject(sf::Vector2f position, float speed, std::string texture_file, sf::Vector2f scale, std::string name);
-	GameObject(sf::Vector2f position, float speed, sf::Vector2f scale, std::string name);
+	GameObject(sf::Vector2f position, float speed, std::string texture_file, sf::Vector2f scale, std::string name, int life);
+	GameObject(sf::Vector2f position, float speed, sf::Vector2f scale, std::string name, int life);
 	void print_attributes();
 	void move(directions direction);
 	sf::Vector2f get_position();
-	bool check_collision(GameObject other_object);
+	bool check_collision(GameObject &other_object);
 	void draw(sf::RenderWindow &window);
 };
 

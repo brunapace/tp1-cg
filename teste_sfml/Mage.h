@@ -13,10 +13,9 @@ class Mage :
 public:
     void shoot();
     std::list<GameObject> shots;
-    Mage(sf::Vector2f position, float speed, std::string texture_file, sf::Vector2f scale, std::string name, sf::Vector2f origin);
+    Mage(sf::Vector2f position, float speed, std::string texture_file, sf::Vector2f scale, std::string name, sf::Vector2f origin, int life);
     void print_attributes();
     void set_default_shot(float shot_speed, std::string shot_texture_file, sf::Vector2f shot_scale, std::string shot_suffix, sf::Vector2f shot_origin);
     void manage_shots(sf::RenderWindow& window);
-
 };
 

@@ -3,7 +3,7 @@
 #include <iostream>
 #include "GameObject.h"
 #include "Mage.h"
-#include "Enemy.h"
+#include "EnemyManager.h"
 
 int main()
 {
@@ -14,19 +14,19 @@ int main()
     bool shot = false;
 
     sf::Texture bg_texture;
-    sf::Texture enemy_texture;
+    sf::Clock clock;
+    sf::Time timer;
+    int count = 0;
       
     if (!bg_texture.loadFromFile("Images/Background (pd).png")) {
         std::cout << "erro ao carregar textura Background" << std::endl;
     }
-    if (!enemy_texture.loadFromFile("Images/inimigo a.png")) {
-        std::cout << "erro ao carregar textura inimigo a" << std::endl;
-    }
-
-    Mage mage = Mage(sf::Vector2f(215.f, 652.f), 0.1, "Images/Black mage.png", sf::Vector2f(2.f, 2.f), "mage", sf::Vector2f(11.f, 11.f));
+    
+    Mage mage = Mage(sf::Vector2f(215.f, 652.f), 0.1, "Images/Black mage.png", sf::Vector2f(2.f, 2.f), "mage", sf::Vector2f(11.f, 11.f), 3);
     mage.set_default_shot(0.1, "Images/projetil.png", sf::Vector2f(2.f, 2.f), "shot_", sf::Vector2f(6.5f, 13.5f));
-    GameObject boss = GameObject(sf::Vector2f(215.f, 50.f), 0, "Images/boss 1.png",sf::Vector2f(2.f, 2.f), "boss");
-    Enemy enemy_a = Enemy(sf::Vector2f(215.f, 178.f), 0, "Images/inimigo a.png", sf::Vector2f(2.f, 2.f), "inimigo a", sf::Vector2f(9.5f, 9.5f));
+    GameObject boss = GameObject(sf::Vector2f(215.f, 50.f), 0, "Images/boss 1.png",sf::Vector2f(2.f, 2.f), "boss", 3);
+    EnemyManager enemies_a = EnemyManager();
+    enemies_a.set_default_enemy(0.05, "Images/inimigo a.png", sf::Vector2f(2.f, 2.f), "enemy_a_", 2);
     sf::Sprite bg_sprite;
 
     bg_sprite.setTexture(bg_texture);
@@ -63,6 +63,7 @@ int main()
                 }
                 else if (event.mouseButton.button == sf::Mouse::Left) {
                     mage.shoot();
+                    enemies_a.spawn_enemy(sf::Vector2f(215.f, 100.f));
                 }
                 break;
             }
@@ -90,12 +91,10 @@ int main()
         }
 
         window.clear();
-
         window.draw(bg_sprite);
+        enemies_a.manage_enemies(window, mage.shots);
         mage.draw(window);
         boss.draw(window);
-        enemy_a.draw(window);
-        //window.draw(enemy);
         mage.manage_shots(window);
         window.display();
     }

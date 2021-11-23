@@ -3,13 +3,13 @@
 void Mage::shoot()
 {
 	std::string shot_name = this->shot_suffix + std::to_string(this->shots.size());
-	GameObject shot = GameObject(this->sprite.getPosition(), this->shot_speed, this->shot_scale, shot_name);
+	GameObject shot = GameObject(this->sprite.getPosition(), this->shot_speed, this->shot_scale, shot_name, 1);
 	shot.sprite.setTexture(this->shot_texture);
 	shot.sprite.setOrigin(this->shot_origin);
 	this->shots.push_back(shot);
 }
 
-Mage::Mage(sf::Vector2f position, float speed, std::string texture_file, sf::Vector2f scale, std::string name, sf::Vector2f origin): GameObject(position, speed, texture_file, scale, name)
+Mage::Mage(sf::Vector2f position, float speed, std::string texture_file, sf::Vector2f scale, std::string name, sf::Vector2f origin, int life): GameObject(position, speed, texture_file, scale, name, life)
 {
 	this->sprite.setOrigin(origin);
 	this->shot_speed = 0.0;
@@ -39,6 +39,10 @@ bool has_reached_end(const GameObject& shot) {
 	return shot.sprite.getPosition().y <= 0;
 }
 
+bool has_collided(const GameObject& shot) {
+	return shot.life <= 0;
+}
+
 void Mage::manage_shots(sf::RenderWindow& window)
 {
 	for (auto it = this->shots.begin(); it != this->shots.end(); it++) {
@@ -46,4 +50,5 @@ void Mage::manage_shots(sf::RenderWindow& window)
 		it->draw(window);
 	}
 	this->shots.remove_if(has_reached_end);
+	this->shots.remove_if(has_collided);
 }
