@@ -1,5 +1,12 @@
 #include "EnemyManager.h"
 
+void EnemyManager::print_attributes()
+{
+	for (auto it = this->enemies.begin(); it != this->enemies.end(); it++) {
+		it->print_attributes();
+	}
+}
+
 void EnemyManager::set_default_enemy(float enemy_speed, std::string enemy_texture_file, sf::Vector2f enemy_scale, std::string enemy_suffix, int life)
 {
 	this->enemy_speed = enemy_speed;

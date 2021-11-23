@@ -60,6 +60,7 @@ int main()
                     debug_single_loop = true;
                     mage.print_attributes();
                     boss.print_attributes();
+                    enemies_a.print_attributes();
                 }
                 else if (event.mouseButton.button == sf::Mouse::Left) {
                     mage.shoot();
