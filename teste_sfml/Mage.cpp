@@ -45,6 +45,7 @@ bool has_collided(const GameObject& shot) {
 
 void Mage::manage_shots(sf::RenderWindow& window)
 {
+	std::cout << "Mage" << std::endl;
 	for (auto it = this->shots.begin(); it != this->shots.end(); it++) {
 		it->move(directions::UP);
 		it->draw(window);

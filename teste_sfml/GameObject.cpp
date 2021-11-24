@@ -32,7 +32,7 @@ GameObject::GameObject(sf::Vector2f position, float speed, sf::Vector2f scale, s
 
 void GameObject::print_attributes()
 {
-	std::cout << this->name << "\tposition: " << this->sprite.getPosition().x << ", " << this->sprite.getPosition().y << "\tspeed: " << this->speed << std::endl;
+	std::cout << this->name << "\tposition: " << this->sprite.getPosition().x << ", " << this->sprite.getPosition().y << "\tspeed: " << this->speed << "\tlife: " << this->life << std::endl;
 }
 
 void GameObject::move(directions direction)
