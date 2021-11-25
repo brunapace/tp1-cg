@@ -28,10 +28,11 @@ int main()
     bool debug = false;
     bool debug_single_loop = false;
     bool shot = false;
-    float pos_x[3];
-    float mov_time[4] = {1, 2, 2, 2};
-    int life[4] = {2, 3, 4, 5};
-    int num_enemy[3] = {1, 1, 5};
+    float pos_x[3] = {380, 170, 390};
+
+    float mov_time[4] = {1, 0.8, 2, 2};
+    int life[4] = {2, 3, 4, 7};
+    int num_enemy[3] = {1, 1, 1};
     gamestates gamestate = gamestates::PRE_INIT;
 
     sf::Texture bg_texture;
@@ -115,6 +116,15 @@ int main()
             }
             
         }
+         if (pause) {
+            continue;
+        }
+        if (debug && !debug_single_loop) {
+            continue;
+        }
+        else {
+            debug_single_loop = false;
+        }
         switch(gamestate){
                 case gamestates::PRE_INIT:
                     bg_sprite.setTexture(pre_init);
@@ -122,18 +132,15 @@ int main()
                 break;
                 case gamestates::INIT:
                     bg_sprite.setTexture(bg_texture);
-                    pos_x[0] = 390;
-                    pos_x[1] = 170;
-                    pos_x[2] = 390;
                     enemies_a = EnemyManager();
                     enemies_b = EnemyManager();
                     enemies_c = EnemyManager();
                     boss = EnemyManager();
                     mage.set_default_shot(0.1, "Images/projetil.png", sf::Vector2f(2.f, 2.f), "shot_", sf::Vector2f(1.5f, 30.5f));
                     enemies_a.set_default_enemy(0.08, "Images/inimigo a.png", sf::Vector2f(2.f, 2.f), "enemy_a_", life[0], enemyType::ENEMY_A,num_enemy[0]);
-                    enemies_b.set_default_enemy(0.08, "Images/inimigo b.png", sf::Vector2f(2.f, 2.f), "enemy_b_", life[1], enemyType::ENEMY_B,num_enemy[1]);
+                    enemies_b.set_default_enemy(0.15, "Images/inimigo b.png", sf::Vector2f(2.f, 2.f), "enemy_b_", life[1], enemyType::ENEMY_B,num_enemy[1]);
                     enemies_c.set_default_enemy(0.08, "Images/inimigo c.png", sf::Vector2f(2.f, 2.f), "enemy_c_", life[2], enemyType::ENEMY_C,num_enemy[2]);
-                    boss.set_default_enemy(0.08, "Images/boss 1.png", sf::Vector2f(2.f, 2.f), "boss", life[3], enemyType::BOSS, 1);
+                    boss.set_default_enemy(0.1, "Images/boss 1.png", sf::Vector2f(2.f, 2.f), "boss", life[3], enemyType::BOSS, 1);
                     gamestate++;
                     break;
                 case gamestates::STAGE_1:
@@ -141,13 +148,7 @@ int main()
                     if(clock_spawn.getElapsedTime().asSeconds() >= 1){
                         if(enemies_a.spawn_enemy(sf::Vector2f(pos_x[0], 170.f))){
                             gamestate++;
-                        }
-                        if(pos_x[0] > 60){
-                            pos_x[0]-=50;
-                        }
-                        else{
-                            pos_x[0]+=50;
-                        }                        
+                        }               
                         clock_spawn.restart();
                     }
                     window.draw(bg_sprite);
@@ -213,15 +214,7 @@ int main()
                     window.draw(bg_sprite);                            
                 break;
             }
-        if (pause) {
-            continue;
-        }
-        if (debug && !debug_single_loop) {
-            continue;
-        }
-        else {
-            debug_single_loop = false;
-        }
+       
             
         if (sf::Mouse::getPosition(window).x > 283 && mage.sprite.getPosition().x <= 510) {
             if (mage.sprite.getPosition().x < sf::Mouse::getPosition(window).x) {

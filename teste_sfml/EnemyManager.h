@@ -11,7 +11,6 @@ class EnemyManager
 {
 	float enemy_speed;
 	int max_enemy;
-	int enemy_count;
 	sf::Texture enemy_texture;
 	sf::Vector2f enemy_scale;
 	std::string enemy_suffix;
@@ -22,6 +21,7 @@ class EnemyManager
 
 	std::vector<directions> get_directions(enemyType enemy_type);
 public:
+	int enemy_count;
 	void print_attributes();
 	void set_default_enemy(float enemy_speed, std::string enemy_texture_file, sf::Vector2f enemy_scale, std::string enemy_suffix, int enemy_life, enemyType enemy_type, int max_enemy);
 	bool manage_enemies(sf::RenderWindow& window, std::list<GameObject> &shots, float time);

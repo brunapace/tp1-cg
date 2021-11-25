@@ -14,10 +14,10 @@ std::vector<directions> EnemyManager::get_directions(enemyType enemy_type)
 		movement.insert(movement.end(), {
 			directions::RIGHT,
 			directions::LD_DIAG,
-			directions::LEFT,
-			directions::RD_DIAG,
-			directions::RIGHT,			
+			directions::RIGHT,
 			directions::DOWN,
+			directions::LEFT,			
+			directions::RD_DIAG,
 			directions::LEFT,
 			directions::DOWN,
 		});
@@ -34,9 +34,6 @@ std::vector<directions> EnemyManager::get_directions(enemyType enemy_type)
 		movement.insert(movement.end(), {
 			directions::LEFT,
 			directions::RIGHT,
-			directions::DOWN,
-			directions::RIGHT,
-			directions::LEFT,
 			directions::DOWN,
 		});
 		return movement;

@@ -37,7 +37,7 @@ void GameObject::print_attributes()
 
 void GameObject::move(directions direction)
 {
-	float move_to = this->speed* 0.3;
+	float move_to = sqrt(2)*this->speed;
 	switch (direction)
 	{
 	case directions::RIGHT:
@@ -50,19 +50,19 @@ void GameObject::move(directions direction)
 		this->sprite.move(0.0, -this->speed);
 		break;
 	case directions::DOWN:
-		this->sprite.move(0.0, this->speed);
+		this->sprite.move(0.0, 0.5*this->speed);
 		break;
 	case directions::RU_DIAG:
-		this->sprite.move(move_to, -move_to);
+		this->sprite.move(move_to, 0.1*(-move_to));
 		break;
 	case directions::RD_DIAG:
-		this->sprite.move(move_to, move_to);
+		this->sprite.move(move_to, 0.1*move_to);
 		break;
 	case directions::LU_DIAG:
-		this->sprite.move(-move_to, -move_to);
+		this->sprite.move(-move_to, 0.1*(-move_to));
 		break;
 	case directions::LD_DIAG:
-		this->sprite.move(-move_to, move_to);
+		this->sprite.move(-move_to, 0.1*move_to);
 		break;
 	default:
 		break;
