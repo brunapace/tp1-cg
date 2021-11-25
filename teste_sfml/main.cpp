@@ -5,7 +5,7 @@
 #include "Mage.h"
 #include "EnemyManager.h"
 
-enum class gamestates {INIT,  STAGE_1, STAGE_2, STAGE_3, STAGE_4, VICTORY, GAMEOVER, END_OF_LIST};
+enum class gamestates {PRE_INIT, INIT,  STAGE_1, STAGE_2, STAGE_3, STAGE_4, VICTORY, GAMEOVER, END_OF_LIST};
 
 gamestates& operator++( gamestates &c ) {
   using IntType = typename std::underlying_type<gamestates>::type ;
@@ -32,9 +32,25 @@ int main()
     float mov_time[4] = {1, 2, 2, 2};
     int life[4] = {2, 3, 4, 5};
     int num_enemy[3] = {1, 1, 5};
-    gamestates gamestate = gamestates::INIT;
+    gamestates gamestate = gamestates::PRE_INIT;
 
     sf::Texture bg_texture;
+    if (!bg_texture.loadFromFile("Images/Background (pd).png")) {
+        std::cout << "erro ao carregar textura Background" << std::endl;
+    }
+    sf::Texture game_over;
+    if (!game_over.loadFromFile("Images/GameOver.png")) {
+        std::cout << "erro ao carregar textura Game Over" << std::endl;
+    }
+    sf::Texture victory;
+    if (!victory.loadFromFile("Images/TelaVitoria.png")) {
+        std::cout << "erro ao carregar textura Vitoria" << std::endl;
+    }
+    sf::Texture pre_init;
+    if (!pre_init.loadFromFile("Images/TelaInicial.png")) {
+        std::cout << "erro ao carregar textura Tela Inicial" << std::endl;
+    }
+
     sf::Clock clock_spawn;
 
     int count = 0;    
@@ -66,6 +82,11 @@ int main()
                 else if (event.key.code == sf::Keyboard::R) {
                     gamestate = gamestates::INIT;
                 }
+                else if (event.key.code == sf::Keyboard::Enter) {
+                    if(gamestate == gamestates::PRE_INIT){
+                        gamestate = gamestates::INIT;
+                    }
+                }
                 break;
             case sf::Event::MouseButtonReleased:
                 if (event.mouseButton.button == sf::Mouse::Right) {
@@ -95,10 +116,11 @@ int main()
             
         }
         switch(gamestate){
+                case gamestates::PRE_INIT:
+                    bg_sprite.setTexture(pre_init);
+                    window.draw(bg_sprite);
+                break;
                 case gamestates::INIT:
-                    if (!bg_texture.loadFromFile("Images/Background (pd).png")) {
-                        std::cout << "erro ao carregar textura Background" << std::endl;
-                    }
                     bg_sprite.setTexture(bg_texture);
                     pos_x[0] = 390;
                     pos_x[1] = 170;
@@ -182,20 +204,13 @@ int main()
                 break;
                 case gamestates::GAMEOVER:
                     window.clear();
-                    if (!bg_texture.loadFromFile("Images/Background Lose.png")) {
-                        std::cout << "erro ao carregar textura Background Tela Final" << std::endl;
-                    }
-                    bg_sprite.setTexture(bg_texture);
+                    bg_sprite.setTexture(game_over);
                     window.draw(bg_sprite);
                 break;
                 case gamestates::VICTORY:
                     window.clear();
-                    /* tentativa de fazer trocar a tela pra telinha de vitória
-                    bg_texture.loadFromFile("Images/Background Win.png");
-                    bg_sprite.setTexture(bg_texture);
-                    window.draw(bg_sprite);*/                    
-                break;
-                default:
+                    bg_sprite.setTexture(victory);
+                    window.draw(bg_sprite);                            
                 break;
             }
         if (pause) {
