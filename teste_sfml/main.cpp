@@ -32,7 +32,7 @@ int main()
 
     float mov_time[4] = {1, 0.8, 2, 2};
     int life[4] = {2, 3, 4, 7};
-    int num_enemy[3] = {1, 1, 1};
+    int num_enemy[3] = {20, 15, 10};
     gamestates gamestate = gamestates::PRE_INIT;
 
     sf::Texture bg_texture;
