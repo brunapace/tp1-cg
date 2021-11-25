@@ -5,6 +5,24 @@
 #include "Mage.h"
 #include "EnemyManager.h"
 
+enum class gamestates {INIT,  STAGE_1, STAGE_2, VICTORY, GAMEOVER, END_OF_LIST};
+
+// Special behavior for ++gamestates
+gamestates& operator++( gamestates &c ) {
+  using IntType = typename std::underlying_type<gamestates>::type ;
+  c = static_cast<gamestates>( static_cast<IntType>(c) + 1 );
+  if ( c == gamestates::END_OF_LIST )
+    c = static_cast<gamestates>(0);
+  return c;
+}
+
+// Special behavior for gamestates++
+gamestates operator++( gamestates &c, int ) {
+  gamestates result = c;
+  ++c;
+  return result;
+}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(566, 830), "Teste SFML");
@@ -12,6 +30,7 @@ int main()
     bool debug = false;
     bool debug_single_loop = false;
     bool shot = false;
+    gamestates gamestate = gamestates::INIT;
 
     sf::Texture bg_texture;
     sf::Clock clock;
@@ -23,11 +42,8 @@ int main()
     }
     
     Mage mage = Mage(sf::Vector2f(215.f, 652.f), 0.1, "Images/Black mage.png", sf::Vector2f(2.f, 2.f), "mage", sf::Vector2f(11.f, 11.f), 3);
-    mage.set_default_shot(0.1, "Images/projetil.png", sf::Vector2f(2.f, 2.f), "shot_", sf::Vector2f(6.5f, 13.5f));
-    EnemyManager enemies_a = EnemyManager();
-    enemies_a.set_default_enemy(0.05, "Images/inimigo a.png", sf::Vector2f(2.f, 2.f), "enemy_a_", 2, enemyType::ENEMY_A);
-    EnemyManager boss = EnemyManager();
-    boss.set_default_enemy(0.05, "Images/boss 1.png", sf::Vector2f(2.f, 2.f), "boss", 12, enemyType::BOSS);
+    EnemyManager enemies_a;
+    EnemyManager boss;
     sf::Sprite bg_sprite;
 
     bg_sprite.setTexture(bg_texture);
@@ -48,6 +64,9 @@ int main()
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::Escape) {
                     open = false;
+                }
+                else if (event.key.code == sf::Keyboard::R) {
+                    gamestate = gamestates::INIT;
                 }
                 break;
             case sf::Event::MouseButtonReleased:
@@ -75,8 +94,36 @@ int main()
                 }
                 break;
             }
+            
         }
-        
+        switch(gamestate){
+                case gamestates::INIT:
+                    enemies_a = EnemyManager();
+                    boss = EnemyManager();
+                    mage.set_default_shot(0.1, "Images/projetil.png", sf::Vector2f(2.f, 2.f), "shot_", sf::Vector2f(6.5f, 13.5f));
+                    enemies_a.set_default_enemy(0.05, "Images/inimigo a.png", sf::Vector2f(2.f, 2.f), "enemy_a_", 2, enemyType::ENEMY_A);
+                    boss.set_default_enemy(0.05, "Images/boss 1.png", sf::Vector2f(2.f, 2.f), "boss", 5, enemyType::BOSS);
+                    gamestate++;
+                    break;
+                case gamestates::STAGE_1:
+                    window.clear();
+                    window.draw(bg_sprite);
+                    enemies_a.manage_enemies(window, mage.shots);
+                    mage.draw(window);
+                    boss.manage_enemies(window, mage.shots);
+                    mage.manage_shots(window);
+                break;
+
+                case gamestates::GAMEOVER:
+                    window.clear();
+                break;
+                case gamestates::VICTORY:
+                    window.clear();
+                    
+                break;
+                default:
+                break;
+            }
         if (pause) {
             continue;
         }
@@ -98,12 +145,12 @@ int main()
             }
         }
 
-        window.clear();
-        window.draw(bg_sprite);
+        //window.clear();
+        /*window.draw(bg_sprite);
         enemies_a.manage_enemies(window, mage.shots);
         mage.draw(window);
         boss.manage_enemies(window, mage.shots);
-        mage.manage_shots(window);
+        mage.manage_shots(window);*/
         window.display();
     }
 

@@ -26,6 +26,7 @@ void Mage::print_attributes()
 
 void Mage::set_default_shot(float shot_speed, std::string shot_texture_file, sf::Vector2f shot_scale, std::string shot_suffix, sf::Vector2f shot_origin)
 {
+	this->shots = std::list<GameObject>();
 	this->shot_speed = shot_speed;
 	if (!this->shot_texture.loadFromFile(shot_texture_file)) {
 		std::cout << "erro ao carregar textura de " << shot_suffix << std::endl;
