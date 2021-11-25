@@ -5,9 +5,8 @@
 #include "Mage.h"
 #include "EnemyManager.h"
 
-enum class gamestates {INIT,  STAGE_1, STAGE_2, VICTORY, GAMEOVER, END_OF_LIST};
+enum class gamestates {INIT,  STAGE_1, STAGE_2, STAGE_3, VICTORY, GAMEOVER, END_OF_LIST};
 
-// Special behavior for ++gamestates
 gamestates& operator++( gamestates &c ) {
   using IntType = typename std::underlying_type<gamestates>::type ;
   c = static_cast<gamestates>( static_cast<IntType>(c) + 1 );
@@ -16,7 +15,6 @@ gamestates& operator++( gamestates &c ) {
   return c;
 }
 
-// Special behavior for gamestates++
 gamestates operator++( gamestates &c, int ) {
   gamestates result = c;
   ++c;
@@ -33,8 +31,8 @@ int main()
     gamestates gamestate = gamestates::INIT;
 
     sf::Texture bg_texture;
-    sf::Clock clock;
-    sf::Time timer;
+    sf::Clock clock_spawn;
+
     int count = 0;
       
     if (!bg_texture.loadFromFile("Images/Background (pd).png")) {
@@ -43,6 +41,7 @@ int main()
     
     Mage mage = Mage(sf::Vector2f(215.f, 652.f), 0.1, "Images/Black mage.png", sf::Vector2f(2.f, 2.f), "mage", sf::Vector2f(11.f, 11.f), 3);
     EnemyManager enemies_a;
+    EnemyManager enemies_b;
     EnemyManager boss;
     sf::Sprite bg_sprite;
 
@@ -89,8 +88,6 @@ int main()
                 }
                 else if (event.mouseButton.button == sf::Mouse::Left) {
                     mage.shoot();
-                    enemies_a.spawn_enemy(sf::Vector2f(215.f, 100.f));
-                    boss.spawn_enemy(sf::Vector2f(215.f, 100.f));
                 }
                 break;
             }
@@ -99,21 +96,59 @@ int main()
         switch(gamestate){
                 case gamestates::INIT:
                     enemies_a = EnemyManager();
+                    enemies_b = EnemyManager();
                     boss = EnemyManager();
                     mage.set_default_shot(0.1, "Images/projetil.png", sf::Vector2f(2.f, 2.f), "shot_", sf::Vector2f(6.5f, 13.5f));
-                    enemies_a.set_default_enemy(0.05, "Images/inimigo a.png", sf::Vector2f(2.f, 2.f), "enemy_a_", 2, enemyType::ENEMY_A);
-                    boss.set_default_enemy(0.05, "Images/boss 1.png", sf::Vector2f(2.f, 2.f), "boss", 5, enemyType::BOSS);
+                    enemies_a.set_default_enemy(0.05, "Images/inimigo a.png", sf::Vector2f(2.f, 2.f), "enemy_a_", 2, enemyType::ENEMY_A,1);
+                    enemies_b.set_default_enemy(0.05, "Images/inimigo b.png", sf::Vector2f(2.f, 2.f), "enemy_b_", 2, enemyType::ENEMY_B, 2);
+                    boss.set_default_enemy(0.05, "Images/boss 1.png", sf::Vector2f(2.f, 2.f), "boss", 1, enemyType::BOSS, 1);
                     gamestate++;
                     break;
                 case gamestates::STAGE_1:
                     window.clear();
+                    if(clock_spawn.getElapsedTime().asSeconds() >= 1){
+                        if(enemies_a.spawn_enemy(sf::Vector2f(215.f, 100.f))){
+                            gamestate++;
+                        }
+                        clock_spawn.restart();
+                    }
                     window.draw(bg_sprite);
-                    enemies_a.manage_enemies(window, mage.shots);
+                    if(enemies_a.manage_enemies(window, mage.shots)){
+                        gamestate = gamestates::GAMEOVER;
+                    };
                     mage.draw(window);
-                    boss.manage_enemies(window, mage.shots);
                     mage.manage_shots(window);
                 break;
-
+                case gamestates::STAGE_2:
+                    window.clear();
+                    if(clock_spawn.getElapsedTime().asSeconds() >= 1){
+                        if(enemies_b.spawn_enemy(sf::Vector2f(215.f, 100.f))){
+                            gamestate++;
+                        }
+                        clock_spawn.restart();
+                    }
+                    window.draw(bg_sprite);
+                    if(enemies_b.manage_enemies(window, mage.shots)){
+                        gamestate = gamestates::GAMEOVER;
+                    };
+                    mage.draw(window);
+                    mage.manage_shots(window);
+                break;
+                case gamestates::STAGE_3:
+                    window.clear();
+                    if(clock_spawn.getElapsedTime().asSeconds() >= 1){
+                        if(boss.spawn_enemy(sf::Vector2f(215.f, 100.f))){
+                            gamestate++;
+                        }
+                        clock_spawn.restart();
+                    }
+                    window.draw(bg_sprite);
+                    if(boss.manage_enemies(window, mage.shots)){
+                        gamestate = gamestates::GAMEOVER;
+                    };
+                    mage.draw(window);
+                    mage.manage_shots(window);
+                break;
                 case gamestates::GAMEOVER:
                     window.clear();
                 break;
@@ -144,7 +179,7 @@ int main()
                 mage.move(directions::LEFT);
             }
         }
-
+        
         //window.clear();
         /*window.draw(bg_sprite);
         enemies_a.manage_enemies(window, mage.shots);

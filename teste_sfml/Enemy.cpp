@@ -9,10 +9,14 @@ Enemy::Enemy(sf::Vector2f position, float speed, sf::Vector2f scale, std::string
 void Enemy::automatic_move()
 {
 	this->move(this->movement.at(this->movement_index));
-	if (this->movement_index < this->movement.size()-1) {
-		this->movement_index++;
+	if(this->clock.getElapsedTime().asSeconds()>=2){
+		if (this->movement_index < this->movement.size()-1) {
+			this->movement_index++;
+		}
+		else {
+			this->movement_index = 0;
+		}
+		this->clock.restart();
 	}
-	else {
-		this->movement_index = 0;
-	}
+		
 }
