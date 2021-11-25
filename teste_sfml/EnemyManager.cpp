@@ -8,26 +8,37 @@ std::vector<directions> EnemyManager::get_directions(enemyType enemy_type)
 		movement.insert(movement.end(), {
 			directions::LD_DIAG,
 			directions::RD_DIAG,
-			});
+		});
 		return movement;
 	case enemyType::ENEMY_B:
 		movement.insert(movement.end(), {
+			directions::RIGHT,
+			directions::LD_DIAG,
 			directions::LEFT,
+			directions::RD_DIAG,
+			directions::RIGHT,			
+			directions::DOWN,
+			directions::LEFT,
+			directions::DOWN,
+		});
+		return movement;
+	case enemyType::ENEMY_C:
+		movement.insert(movement.end(), {
 			directions::LEFT,
 			directions::DOWN,
 			directions::RIGHT,
-			directions::RIGHT,
-			});
+			directions::DOWN,
+		});
 		return movement;
 	default:
 		movement.insert(movement.end(), {
 			directions::LEFT,
 			directions::RIGHT,
 			directions::DOWN,
-			directions::DOWN,
 			directions::RIGHT,
 			directions::LEFT,
-			});
+			directions::DOWN,
+		});
 		return movement;
 	}
 	
@@ -58,12 +69,12 @@ bool is_dead(const GameObject& enemy) {
 	return enemy.life <= 0;
 }
 
-bool EnemyManager::manage_enemies(sf::RenderWindow& window, std::list<GameObject> &shots){
+bool EnemyManager::manage_enemies(sf::RenderWindow& window, std::list<GameObject> &shots, float time){
 
 	for (auto it = this->enemies.begin(); it != this->enemies.end(); it++) {
-		it->automatic_move();
+		it->automatic_move(time);
 		it->draw(window);
-		if (it->get_position().y >= 830) {
+		if (it->get_position().y >= 652) {
 			return true;
 		}
 		for (auto st = shots.begin(); st != shots.end(); st++) {

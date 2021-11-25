@@ -21,12 +21,12 @@ GameObject::GameObject(sf::Vector2f position, float speed, std::string texture_f
 
 GameObject::GameObject(sf::Vector2f position, float speed, sf::Vector2f scale, std::string name, int life)
 {
-	this->speed = speed;
-	this->name = name;
-	this->life = life;
 	this->sprite = sf::Sprite();
 	this->sprite.setPosition(position);
+	this->speed = speed;
 	this->sprite.scale(scale);
+	this->name = name;
+	this->life = life;
 }
 
 
@@ -37,7 +37,7 @@ void GameObject::print_attributes()
 
 void GameObject::move(directions direction)
 {
-	float move_to = this->speed* sqrt(2);;
+	float move_to = this->speed* 0.3;
 	switch (direction)
 	{
 	case directions::RIGHT:

@@ -11,6 +11,6 @@ class Enemy : public GameObject
 	sf::Clock clock;
 public:
 	Enemy(sf::Vector2f position, float speed, sf::Vector2f scale, std::string name, int life, std::vector<directions> movement);
-	void automatic_move();
+	void automatic_move(float time);
 };
 
