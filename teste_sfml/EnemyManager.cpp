@@ -30,6 +30,16 @@ std::vector<directions> EnemyManager::get_directions(enemyType enemy_type)
 			directions::DOWN,
 		});
 		return movement;
+	case enemyType::BOSS:
+	movement.insert(movement.end(), {
+		directions::DOWN_BOSS,
+		directions::LEFT_BOSS,
+		directions::RIGHT_BOSS,
+		directions::DOWN_BOSS,
+		directions::RIGHT_BOSS,
+		directions::LEFT_BOSS,
+	});
+		return movement;
 	default:
 		movement.insert(movement.end(), {
 			directions::LEFT,

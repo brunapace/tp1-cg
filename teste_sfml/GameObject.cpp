@@ -64,6 +64,15 @@ void GameObject::move(directions direction)
 	case directions::LD_DIAG:
 		this->sprite.move(-move_to, 0.1*move_to);
 		break;
+		case directions::RIGHT_BOSS:
+		this->sprite.move(0.5*this->speed, 0.0);
+		break;
+	case directions::LEFT_BOSS:
+		this->sprite.move(0.5*(-this->speed), 0.0);
+		break;
+	case directions::DOWN_BOSS:
+		this->sprite.move(0.0, 0.5*this->speed);
+		break;
 	default:
 		break;
 	}

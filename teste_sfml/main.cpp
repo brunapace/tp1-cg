@@ -191,7 +191,7 @@ int main()
                 case gamestates::STAGE_4:
                     window.clear();
                     if(clock_spawn.getElapsedTime().asSeconds() >= 1){
-                        if(boss.spawn_enemy(sf::Vector2f(170.f, 100.f))){
+                        if(boss.spawn_enemy(sf::Vector2f(240.f, 100.f))){
                             gamestate++;
                         }
                         clock_spawn.restart();

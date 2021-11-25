@@ -5,7 +5,7 @@
 #include<math.h>
 enum class directions
 {
-	RIGHT, LEFT, UP, DOWN, RU_DIAG, RD_DIAG, LU_DIAG, LD_DIAG
+	RIGHT, LEFT, UP, DOWN, RU_DIAG, RD_DIAG, LU_DIAG, LD_DIAG, RIGHT_BOSS, LEFT_BOSS, DOWN_BOSS
 };
 class GameObject
 {
